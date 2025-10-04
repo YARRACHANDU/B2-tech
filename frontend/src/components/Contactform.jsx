@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Send, CheckCircle, AlertTriangle, Info } from "lucide-react";
 
 export default function ContactForm() {
-  const [form, setForm] = useState({ name: "", email: "", otp: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    otp: "",
+    message: "",
+  });
   const [otpSent, setOtpSent] = useState(false);
   const [verified, setVerified] = useState(false);
   const [status, setStatus] = useState("");
@@ -12,13 +17,14 @@ export default function ContactForm() {
   const [loadingVerify, setLoadingVerify] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const sendOtp = async () => {
     if (!form.email) return setStatus("⚠️ Please enter your email first");
     setLoadingOtp(true);
     try {
-      const res = await fetch("https://b2techservic.onrender.com/api/contact/send-otp", {
+      const res = await fetch("https://localhost:5000/api/contact/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email }),
@@ -36,11 +42,14 @@ export default function ContactForm() {
     if (!form.otp) return setStatus("⚠️ Please enter the OTP");
     setLoadingVerify(true);
     try {
-      const res = await fetch("https://b2techservic.onrender.com/api/contact/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.email, otp: form.otp }),
-      });
+      const res = await fetch(
+        "https://b2techservic.onrender.com/api/contact/verify-otp",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: form.email, otp: form.otp }),
+        }
+      );
       const data = await res.json();
       setStatus(data.message || "Verification completed.");
       if (data.success) setVerified(true);
@@ -55,7 +64,8 @@ export default function ContactForm() {
     if (!verified) return setStatus("⚠️ Please verify email first");
     setLoadingSubmit(true);
     try {
-      const res = await fetch("https://b2techservic.onrender.com/api/contact", { // Updated endpoint
+      const res = await fetch("https://b2techservic.onrender.com/api/contact", {
+        // Updated endpoint
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -76,25 +86,36 @@ export default function ContactForm() {
   // Status rendering with icons
   const renderStatus = () => {
     if (!status) return null;
-    const classes = "mt-4 p-4 rounded-xl font-semibold flex items-center gap-2 shadow-md transition-all";
+    const classes =
+      "mt-4 p-4 rounded-xl font-semibold flex items-center gap-2 shadow-md transition-all";
     if (status.toLowerCase().includes("success")) {
       return (
-        <div className={`${classes} bg-green-100 text-green-800 border border-green-300`}>
+        <div
+          className={`${classes} bg-green-100 text-green-800 border border-green-300`}
+        >
           <CheckCircle className="w-5 h-5 text-green-600" />
           <span>{status}</span>
         </div>
       );
     }
-    if (status.toLowerCase().includes("error") || status.startsWith("⚠️") || status.startsWith("❌")) {
+    if (
+      status.toLowerCase().includes("error") ||
+      status.startsWith("⚠️") ||
+      status.startsWith("❌")
+    ) {
       return (
-        <div className={`${classes} bg-red-100 text-red-800 border border-red-300`}>
+        <div
+          className={`${classes} bg-red-100 text-red-800 border border-red-300`}
+        >
           <AlertTriangle className="w-5 h-5 text-red-600" />
           <span>{status}</span>
         </div>
       );
     }
     return (
-      <div className={`${classes} bg-blue-100 text-blue-800 border border-blue-300`}>
+      <div
+        className={`${classes} bg-blue-100 text-blue-800 border border-blue-300`}
+      >
         <Info className="w-5 h-5 text-blue-600" />
         <span>{status}</span>
       </div>
@@ -135,19 +156,18 @@ export default function ContactForm() {
               className="flex-1 p-4 border-2 border-gray-200 rounded-xl focus:border-[#00809D] focus:outline-none transition-colors"
               required
             />
-       <button
-  type="button"
-  onClick={sendOtp}
-  disabled={loadingOtp}
-  className={`px-6 py-3 rounded-xl font-semibold text-white transition-colors shadow-lg ${
-    loadingOtp
-      ? "bg-gray-400 cursor-not-allowed"
-      : "bg-[#00809D] hover:bg-[#006b84] cursor-pointer"
-  }`}
->
-  {loadingOtp ? "Sending..." : "Send OTP"}
-</button>
-
+            <button
+              type="button"
+              onClick={sendOtp}
+              disabled={loadingOtp}
+              className={`px-6 py-3 rounded-xl font-semibold text-white transition-colors shadow-lg ${
+                loadingOtp
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#00809D] hover:bg-[#006b84] cursor-pointer"
+              }`}
+            >
+              {loadingOtp ? "Sending..." : "Send OTP"}
+            </button>
           </div>
         </div>
 

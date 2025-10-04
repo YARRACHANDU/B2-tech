@@ -37,7 +37,7 @@ export default function Dashboard() {
   // ------------------ Flashnews Save ------------------
   const saveFlashnews = async () => {
     try {
-      await fetch("https://b2techservic.onrender.com/news/flashnews", {
+      await fetch("https://https://localhost:5000/news/flashnews", {
         method: "PUT",
         headers: { ...headers, "Content-Type": "application/json" },
         body: JSON.stringify({ flashnews }),
@@ -57,8 +57,8 @@ export default function Dashboard() {
     if (formImage) formData.append("image", formImage);
 
     const url = editing
-      ? `https://b2techservic.onrender.com/news/achievements/${editing._id}`
-      : "https://b2techservic.onrender.com/news/achievements";
+      ? `https://localhost:5000/news/achievements/${editing._id}`
+      : "https://localhost:5000/news/achievements";
     const method = editing ? "PUT" : "POST";
 
     try {
@@ -79,10 +79,13 @@ export default function Dashboard() {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`https://b2techservic.onrender.com/news/achievements/${id}`, {
-        method: "DELETE",
-        headers,
-      });
+      const res = await fetch(
+        `https://https://localhost:5000/news/achievements/${id}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      );
       if (res.ok) setAchievements((prev) => prev.filter((a) => a._id !== id));
     } catch (err) {
       console.error(err);

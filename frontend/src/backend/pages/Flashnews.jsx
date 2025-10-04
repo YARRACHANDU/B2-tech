@@ -23,7 +23,7 @@ export default function Flashnews({ token }) {
 
   const saveFlashnews = async () => {
     try {
-      const res = await fetch("https://b2techservic.onrender.com/news/flashnews", {
+      const res = await fetch("https://https://localhost:5000/news/flashnews", {
         method: "PUT",
         headers: { ...headers, "Content-Type": "application/json" },
         body: JSON.stringify({ flashnews }),
